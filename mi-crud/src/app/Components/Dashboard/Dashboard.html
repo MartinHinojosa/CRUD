@@ -1,0 +1,324 @@
+<div class="dashboard-container">
+  <!-- Sidebar de navegación -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="icon">🔧</span>
+        <h2>AutoRepair Pro</h2>
+      </div>
+    </div>
+    
+    <nav class="sidebar-nav">
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'profile'"
+        (click)="setActiveSection('profile')">
+        <span class="icon">👤</span>
+        <span>Mi Perfil</span>
+      </button>
+      
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'cars'"
+        (click)="setActiveSection('cars')">
+        <span class="icon">🚗</span>
+        <span>Mis Carros</span>
+        <span class="badge" *ngIf="totalCars > 0">{{ totalCars }}</span>
+      </button>
+      
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'history'"
+        (click)="setActiveSection('history')"
+        *ngIf="isClient">
+        <span class="icon">📋</span>
+        <span>Historial</span>
+      </button>
+      
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'appointments'"
+        (click)="setActiveSection('appointments')"
+        *ngIf="isAdmin || isReceptionist">
+        <span class="icon">📅</span>
+        <span>Citas y Reparaciones</span>
+      </button>
+    </nav>
+    
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <span class="icon">🚪</span>
+        <span>Cerrar Sesión</span>
+      </button>
+    </div>
+  </aside>
+  
+  <!-- Contenido principal -->
+  <main class="dashboard-content">
+    <!-- Loading -->
+    <div *ngIf="loading" class="loading-container">
+      <div class="spinner"></div>
+      <p>Cargando información...</p>
+    </div>
+    
+    <!-- Error -->
+    <div *ngIf="error && !loading" class="error-container">
+      <p class="error-message">{{ error }}</p>
+    </div>
+    
+    <!-- Sección de Perfil -->
+    <section *ngIf="!loading && !error && activeSection === 'profile'" class="section-content">
+      <div class="section-header">
+        <h1>Mi Perfil</h1>
+      </div>
+      
+      <div class="profile-card">
+        <div class="profile-avatar">
+          <span class="avatar-icon">👨‍🔧</span>
+        </div>
+        
+        <div class="profile-info" *ngIf="profile">
+          <h2>{{ profile.name }} {{ profile.lastName }}</h2>
+          <div class="info-row">
+            <span class="label">📧 Email:</span>
+            <span class="value">{{ profile.email }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">👤 Rol:</span>
+            <span class="value badge-rol">{{ profile.rol }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Información del Cliente -->
+      <div class="client-card" *ngIf="clientInfo">
+        <h3>Información de Cliente</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Nombre:</span>
+            <span class="value">{{ clientInfo.name }} {{ clientInfo.lastName }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Teléfono:</span>
+            <span class="value">{{ clientInfo.telephone || 'No registrado' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Dirección:</span>
+            <span class="value">{{ clientInfo.address || 'No registrada' }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Sección de Carros -->
+    <section *ngIf="!loading && !error && activeSection === 'cars'" class="section-content">
+      <div class="section-header">
+        <h1>Mis Carros Registrados</h1>
+        <p class="subtitle">Total: {{ totalCars }} vehículos</p>
+      </div>
+      
+      <div *ngIf="cars.length === 0" class="empty-state">
+        <span class="empty-icon">🚗</span>
+        <p>No tienes carros registrados en el sistema</p>
+      </div>
+      
+      <div class="cars-grid" *ngIf="cars.length > 0">
+        <div class="car-card" *ngFor="let car of cars">
+          <div class="car-header">
+            <span class="car-icon">🚗</span>
+            <h3>{{ car.brand }} {{ car.model }}</h3>
+          </div>
+          
+          <div class="car-details">
+            <div class="detail-item">
+              <span class="label">Año:</span>
+              <span class="value">{{ car.yearCar }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Placa:</span>
+              <span class="value plate">{{ formatPlate(car.plate) }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">ID Cliente:</span>
+              <span class="value">{{ car.idCliente }}</span>
+            </div>
+          </div>
+          
+          <button class="view-repairs-btn">
+            <span>Ver Reparaciones</span>
+            <span class="icon">🔧</span>
+          </button>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Sección de Historial de Reparaciones (Clientes) -->
+    <section *ngIf="!loading && !error && activeSection === 'history' && isClient" class="section-content">
+      <div class="section-header">
+        <h1>Historial de Reparaciones</h1>
+        <p class="subtitle">Total: {{ repairs.length }} reparaciones</p>
+      </div>
+      
+      <div *ngIf="repairs.length === 0" class="empty-state">
+        <span class="empty-icon">📋</span>
+        <p>No hay reparaciones registradas aún</p>
+        <small>El historial de reparaciones aparecerá aquí cuando se registren servicios</small>
+      </div>
+      
+      <div class="repairs-grid" *ngIf="repairs.length > 0">
+        <div class="repair-card" *ngFor="let repair of repairs">
+          <div class="repair-header">
+            <div class="repair-status">
+              <span class="badge" [ngClass]="getStatusBadgeClass(repair.status)">{{ repair.status }}</span>
+            </div>
+            <h3>Reparación #{{ repair.idRepair }}</h3>
+          </div>
+          
+          <div class="repair-details">
+            <div class="detail-row">
+              <span class="label">📝 Descripción:</span>
+              <span class="value">{{ repair.description || 'Sin descripción' }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">📅 Fecha de Ingreso:</span>
+              <span class="value">{{ formatDate(repair.entryDate) }}</span>
+            </div>
+            <div class="detail-row" *ngIf="repair.estimatedDate">
+              <span class="label">📅 Fecha Estimada:</span>
+              <span class="value">{{ formatDate(repair.estimatedDate) }}</span>
+            </div>
+            <div class="detail-row" *ngIf="repair.completionDate">
+              <span class="label">✅ Fecha de Finalización:</span>
+              <span class="value">{{ formatDate(repair.completionDate) }}</span>
+            </div>
+            <div class="detail-row" *ngIf="repair.cost">
+              <span class="label">💰 Costo:</span>
+              <span class="value cost">${{ repair.cost.toFixed(2) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Sección de Gestión de Citas (Admin/Recepcionista) -->
+    <section *ngIf="!loading && !error && activeSection === 'appointments' && (isAdmin || isReceptionist)" class="section-content">
+      <div class="section-header">
+        <h1>Gestión de Citas y Reparaciones</h1>
+        <button class="btn-new-appointment" (click)="showNewAppointmentForm = true">
+          <span>➕</span> Nueva Cita
+        </button>
+      </div>
+      
+      <!-- Formulario de Nueva Cita -->
+      <div class="new-appointment-form" *ngIf="showNewAppointmentForm">
+        <h3>Nueva Cita / Ingreso de Reparación</h3>
+        <form (ngSubmit)="createNewAppointment()">
+          <div class="form-group">
+            <label>Cliente: *</label>
+            <select [(ngModel)]="newAppointment.clientId" name="clientId" (change)="onClientSelected()" required>
+              <option value="">Seleccione un cliente</option>
+              <option *ngFor="let client of allClients" [value]="client.idClient">
+                {{ client.nameClient }} {{ client.lastName }} - {{ client.email }}
+              </option>
+            </select>
+            <small *ngIf="allClients.length === 0" class="form-hint">No hay clientes registrados. Primero deben registrarse clientes.</small>
+          </div>
+          
+          <!-- Selección de carro -->
+          <div class="form-group" *ngIf="newAppointment.clientId">
+            <label>Opción de Carro:</label>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="carOption" [(ngModel)]="newAppointment.useExistingCar" 
+                       [value]="true" (change)="toggleCarOption()">
+                <span>Seleccionar carro existente</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="carOption" [(ngModel)]="newAppointment.useExistingCar" 
+                       [value]="false" (change)="toggleCarOption()">
+                <span>Registrar carro nuevo</span>
+              </label>
+            </div>
+          </div>
+          
+          <!-- Carro existente -->
+          <div class="form-group" *ngIf="newAppointment.clientId && newAppointment.useExistingCar">
+            <label>Carro: *</label>
+            <select [(ngModel)]="newAppointment.carId" name="carId" [required]="newAppointment.useExistingCar">
+              <option value="">Seleccione un carro</option>
+              <option *ngFor="let car of clientCars" [value]="car.idCar">
+                {{ car.brand }} {{ car.model }} {{ car.yearCar ? '(' + car.yearCar + ')' : '' }} - {{ car.plate || 'Sin placa' }}
+              </option>
+            </select>
+            <small *ngIf="clientCars.length === 0 && newAppointment.clientId" class="form-hint">
+              Este cliente no tiene carros registrados. Seleccione "Registrar carro nuevo".
+            </small>
+          </div>
+          
+          <!-- Formulario de carro nuevo -->
+          <div class="new-car-form" *ngIf="newAppointment.clientId && !newAppointment.useExistingCar">
+            <h4>Datos del Carro Nuevo</h4>
+            
+            <div class="form-group">
+              <label>Marca: *</label>
+              <input type="text" [(ngModel)]="newCar.brand" name="brand" 
+                     placeholder="Ej: Toyota, Ford, Chevrolet" required>
+            </div>
+            
+            <div class="form-group">
+              <label>Modelo: *</label>
+              <input type="text" [(ngModel)]="newCar.model" name="model" 
+                     placeholder="Ej: Corolla, F-150, Silverado" required>
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label>Año:</label>
+                <input type="number" [(ngModel)]="newCar.yearCar" name="yearCar" 
+                       placeholder="Ej: 2020" min="1900" max="2099">
+              </div>
+              
+              <div class="form-group">
+                <label>Placa:</label>
+                <input type="text" [(ngModel)]="newCar.plate" name="plate" 
+                       placeholder="Ej: ABC-123" maxlength="20">
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Descripción del Problema: *</label>
+            <textarea [(ngModel)]="newAppointment.description" name="description" rows="4" 
+                      placeholder="Describa el problema o servicio que requiere el vehículo" required></textarea>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Fecha de Ingreso: *</label>
+              <input type="datetime-local" [(ngModel)]="newAppointment.entryDate" name="entryDate" required>
+            </div>
+            
+            <div class="form-group">
+              <label>Fecha Estimada de Entrega:</label>
+              <input type="datetime-local" [(ngModel)]="newAppointment.estimatedDate" name="estimatedDate">
+            </div>
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn-submit" 
+                    [disabled]="!newAppointment.clientId || (!newAppointment.carId && newAppointment.useExistingCar) || (!newCar.brand && !newAppointment.useExistingCar)">
+              Crear Cita
+            </button>
+            <button type="button" class="btn-cancel" (click)="cancelNewAppointment()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="appointments-list">
+        <!-- Lista de citas/reparaciones -->
+        <p class="info-text">Aquí se mostrarán todas las citas y reparaciones del taller</p>
+      </div>
+    </section>
+  </main>
+</div>
+

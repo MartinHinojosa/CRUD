@@ -21,10 +21,10 @@
         <div class="input-group">
           <div class="input-icon">👤</div>
           <input 
-            type="text" 
+            type="email" 
             [(ngModel)]="username" 
             name="username"
-            placeholder="Usuario o Email"
+            placeholder="Email"
             required>
         </div>
         
@@ -49,9 +49,12 @@
           </button>
         </div>
         
-        <button type="submit" class="login-btn">
-          <span class="btn-icon">🚗</span>
-          Entrar al Taller
+        <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+        
+        <button type="submit" class="login-btn" [disabled]="loading">
+          <span class="btn-icon" *ngIf="!loading">🚗</span>
+          <span class="btn-icon" *ngIf="loading">⏳</span>
+          {{ loading ? 'Iniciando sesión...' : 'Entrar al Taller' }}
         </button>
       </form>
       
@@ -118,9 +121,12 @@
             required>
         </div>
         
-        <button type="submit" class="register-submit-btn">
-          <span class="btn-icon">✅</span>
-          Registrarse
+        <div class="error-message" *ngIf="errorMessage && showRegisterForm">{{ errorMessage }}</div>
+        
+        <button type="submit" class="register-submit-btn" [disabled]="loading">
+          <span class="btn-icon" *ngIf="!loading">✅</span>
+          <span class="btn-icon" *ngIf="loading">⏳</span>
+          {{ loading ? 'Registrando...' : 'Registrarse' }}
         </button>
       </form>
       

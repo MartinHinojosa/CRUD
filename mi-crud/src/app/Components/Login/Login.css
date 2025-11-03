@@ -110,7 +110,7 @@ body {
   color: var(--primary-orange);
   font-size: 2.2rem;
   font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  text-shadow: 2px 2px 4px rgba(121, 11, 11, 0.1);
   margin: 0;
 }
 
@@ -252,7 +252,7 @@ body {
 .login-btn, .register-submit-btn, .forgot-submit-btn {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(135deg, var(--primary-orange), var(--secondary-orange));
+  background: #2C3E50;
   color: white;
   border: none;
   border-radius: 10px;
@@ -265,12 +265,13 @@ body {
   justify-content: center;
   gap: 10px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
 }
 
 .login-btn:hover, .register-submit-btn:hover, .forgot-submit-btn:hover {
+  background: #34495E;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+  box-shadow: 0 6px 20px rgba(44, 62, 80, 0.5);
 }
 
 .btn-icon {
@@ -290,7 +291,7 @@ body {
 }
 
 .register-btn {
-  background: linear-gradient(135deg, var(--accent-blue), #5DADE2);
+  background: #27AE60;
   color: white;
   border: none;
   padding: 12px 25px;
@@ -299,12 +300,13 @@ body {
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
 }
 
 .register-btn:hover {
+  background: #229954;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+  box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
 }
 
 /* Botón de volver */
@@ -423,4 +425,25 @@ body {
     padding: 12px;
     font-size: 1rem;
   }
+}
+
+/* Mensaje de error */
+.error-message {
+  background: rgba(231, 76, 60, 0.2);
+  border: 2px solid #E74C3C;
+  color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.login-btn:disabled,
+.register-submit-btn:disabled,
+.forgot-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background: #7F8C8D;
 }
