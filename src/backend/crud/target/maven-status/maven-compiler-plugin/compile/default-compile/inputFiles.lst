@@ -1,0 +1,17 @@
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\config\CorsConfig.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\config\DatabaseConfig.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\controller\CarController.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\controller\ClientController.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\controller\DashboardController.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\controller\HealthController.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\controller\RepairController.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\controller\UserController.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\CrudApplication.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\entity\Car.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\entity\Client.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\entity\Repair.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\entity\User.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\repository\CarRepository.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\repository\ClientRepository.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\repository\RepairRepository.java
+C:\Users\tgmhy\Documents\CRUD\mi-crud\src\backend\crud\src\main\java\com\crud\crud\repository\UserRepository.java

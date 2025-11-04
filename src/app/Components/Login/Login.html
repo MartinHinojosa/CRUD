@@ -1,0 +1,174 @@
+<div class="login-container">
+  <!-- Fondo con temática de taller mecánico -->
+  <div class="background-overlay"></div>
+  
+  <!-- Contenedor principal del login -->
+  <div class="login-card">
+    <!-- Header con logo del taller -->
+    <div class="login-header">
+      <div class="logo-container">
+        <div class="wrench-icon">🔧</div>
+        <h1>Taller Mecánico</h1>
+        <h2>AutoRepair Pro</h2>
+      </div>
+    </div>
+
+    <!-- Formulario de Login -->
+    <div class="login-form" *ngIf="!showRegisterForm && !showForgotPassword">
+      <h3>Iniciar Sesión</h3>
+      
+      <form (ngSubmit)="onLogin()">
+        <div class="input-group">
+          <div class="input-icon">👤</div>
+          <input 
+            type="email" 
+            [(ngModel)]="username" 
+            name="username"
+            placeholder="Email"
+            required>
+        </div>
+        
+        <div class="input-group">
+          <div class="input-icon">🔒</div>
+          <input 
+            type="password" 
+            [(ngModel)]="password" 
+            name="password"
+            placeholder="Contraseña"
+            required>
+        </div>
+        
+        <div class="remember-forgot">
+          <label class="checkbox-container">
+            <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe">
+            <span class="checkmark"></span>
+            Recordar contraseña
+          </label>
+          <button type="button" class="forgot-link" (click)="showForgot()">
+            ¿Olvidaste tu contraseña?
+          </button>
+        </div>
+        
+        <div class="error-message" *ngIf="errorMessage">{{ errorMessage }}</div>
+        
+        <button type="submit" class="login-btn" [disabled]="loading">
+          <span class="btn-icon" *ngIf="!loading">🚗</span>
+          <span class="btn-icon" *ngIf="loading">⏳</span>
+          {{ loading ? 'Iniciando sesión...' : 'Entrar al Taller' }}
+        </button>
+      </form>
+      
+      <div class="register-section">
+        <p>¿No tienes cuenta?</p>
+        <button type="button" class="register-btn" (click)="showRegister()">
+          Registrarse como Mecánico
+        </button>
+      </div>
+    </div>
+
+    <!-- Formulario de Registro -->
+    <div class="register-form" *ngIf="showRegisterForm">
+      <h3>Registro de Mecánico</h3>
+      
+      <form (ngSubmit)="onRegister()">
+        <div class="input-group">
+          <div class="input-icon">👨‍🔧</div>
+          <input 
+            type="text" 
+            [(ngModel)]="registerData.fullName" 
+            name="fullName"
+            placeholder="Nombre Completo"
+            required>
+        </div>
+        
+        <div class="input-group">
+          <div class="input-icon">📧</div>
+          <input 
+            type="email" 
+            [(ngModel)]="registerData.email" 
+            name="email"
+            placeholder="Email"
+            required>
+        </div>
+        
+        <div class="input-group">
+          <div class="input-icon">📱</div>
+          <input 
+            type="tel" 
+            [(ngModel)]="registerData.phone" 
+            name="phone"
+            placeholder="Teléfono"
+            required>
+        </div>
+        
+        <div class="input-group">
+          <div class="input-icon">🔒</div>
+          <input 
+            type="password" 
+            [(ngModel)]="registerData.password" 
+            name="password"
+            placeholder="Contraseña"
+            required>
+        </div>
+        
+        <div class="input-group">
+          <div class="input-icon">🔒</div>
+          <input 
+            type="password" 
+            [(ngModel)]="registerData.confirmPassword" 
+            name="confirmPassword"
+            placeholder="Confirmar Contraseña"
+            required>
+        </div>
+        
+        <div class="error-message" *ngIf="errorMessage && showRegisterForm">{{ errorMessage }}</div>
+        
+        <button type="submit" class="register-submit-btn" [disabled]="loading">
+          <span class="btn-icon" *ngIf="!loading">✅</span>
+          <span class="btn-icon" *ngIf="loading">⏳</span>
+          {{ loading ? 'Registrando...' : 'Registrarse' }}
+        </button>
+      </form>
+      
+      <button type="button" class="back-btn" (click)="backToLogin()">
+        ← Volver al Login
+      </button>
+    </div>
+
+    <!-- Formulario de Recuperar Contraseña -->
+    <div class="forgot-form" *ngIf="showForgotPassword">
+      <h3>Recuperar Contraseña</h3>
+      <p>Ingresa tu email para recibir un enlace de recuperación</p>
+      
+      <form (ngSubmit)="onForgotPassword()">
+        <div class="input-group">
+          <div class="input-icon">📧</div>
+          <input 
+            type="email" 
+            id="forgotEmail"
+            placeholder="Email registrado"
+            required>
+        </div>
+        
+        <button type="submit" class="forgot-submit-btn">
+          <span class="btn-icon">📨</span>
+          Enviar Enlace
+        </button>
+      </form>
+      
+      <button type="button" class="back-btn" (click)="backToLogin()">
+        ← Volver al Login
+      </button>
+    </div>
+  </div>
+  
+  <!-- Elementos decorativos del taller -->
+  <div class="decorative-elements">
+    <div class="gear gear-1">⚙️</div>
+    <div class="gear gear-2">⚙️</div>
+    <div class="gear gear-3">⚙️</div>
+    <div class="tool tool-1">🔧</div>
+    <div class="tool tool-2">🔨</div>
+    <div class="tool tool-3">🛠️</div>
+  </div>
+</div>
