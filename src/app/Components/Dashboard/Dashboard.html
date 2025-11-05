@@ -43,6 +43,15 @@
         <span class="icon">📅</span>
         <span>Citas y Reparaciones</span>
       </button>
+      
+      <button 
+        class="nav-item" 
+        [class.active]="activeSection === 'users'"
+        (click)="setActiveSection('users')"
+        *ngIf="isAdmin || isReceptionist || isMechanic">
+        <span class="icon">👥</span>
+        <span>Registro de Usuarios</span>
+      </button>
     </nav>
     
     <div class="sidebar-footer">
@@ -317,6 +326,77 @@
       <div class="appointments-list">
         <!-- Lista de citas/reparaciones -->
         <p class="info-text">Aquí se mostrarán todas las citas y reparaciones del taller</p>
+      </div>
+    </section>
+    
+    <!-- Sección de Registro de Usuarios (Admin/Recepcionista/Mecánico) -->
+    <section *ngIf="!loading && !error && activeSection === 'users' && (isAdmin || isReceptionist || isMechanic)" class="section-content">
+      <div class="section-header">
+        <h1>Registro de Usuarios</h1>
+        <button class="btn-new-appointment" (click)="showRegisterUserForm()">
+          <span>➕</span> Nuevo Usuario
+        </button>
+      </div>
+      
+      <!-- Formulario de Nuevo Usuario -->
+      <div class="new-appointment-form" *ngIf="showNewUserForm">
+        <h3>Registrar Nuevo Usuario</h3>
+        <form (ngSubmit)="createNewUser()">
+          <div class="form-group">
+            <label>Nombre: *</label>
+            <input type="text" [(ngModel)]="newUser.name" name="name" 
+                   placeholder="Nombre" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Apellido: *</label>
+            <input type="text" [(ngModel)]="newUser.lastName" name="lastName" 
+                   placeholder="Apellido" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Email: *</label>
+            <input type="email" [(ngModel)]="newUser.email" name="email" 
+                   placeholder="Email" required>
+          </div>
+          
+          <div class="form-group">
+            <label>Rol: *</label>
+            <select [(ngModel)]="newUser.rol" name="rol" required>
+              <option value="mecanico">Mecánico</option>
+              <option value="administrador">Administrador</option>
+              <option value="recepcionista">Recepcionista</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Contraseña: *</label>
+            <input type="password" [(ngModel)]="newUser.password" name="password" 
+                   placeholder="Contraseña (mínimo 6 caracteres)" required minlength="6">
+          </div>
+          
+          <div class="form-group">
+            <label>Confirmar Contraseña: *</label>
+            <input type="password" [(ngModel)]="newUser.confirmPassword" name="confirmPassword" 
+                   placeholder="Confirmar contraseña" required minlength="6">
+          </div>
+          
+          <div class="form-actions">
+            <button type="submit" class="btn-submit" 
+                    [disabled]="!newUser.name || !newUser.lastName || !newUser.email || 
+                               !newUser.password || !newUser.confirmPassword || !newUser.rol">
+              Registrar Usuario
+            </button>
+            <button type="button" class="btn-cancel" (click)="cancelNewUser()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="info-box">
+        <p class="info-text">
+          <strong>Nota:</strong> Esta sección permite registrar nuevos usuarios del sistema (mecánicos, administradores y recepcionistas). 
+          Estos usuarios podrán iniciar sesión en el sistema. Los clientes se registran desde la página de inicio.
+        </p>
       </div>
     </section>
   </main>

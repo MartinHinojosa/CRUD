@@ -49,6 +49,7 @@ export class DashboardComponent implements OnInit {
   isAdmin: boolean = false;
   isReceptionist: boolean = false;
   isClient: boolean = false;
+  isMechanic: boolean = false;
   
   // Gestión de citas (admin/recepcionista)
   showNewAppointmentForm: boolean = false;
@@ -69,6 +70,17 @@ export class DashboardComponent implements OnInit {
     model: '',
     yearCar: null,
     plate: ''
+  };
+  
+  // Gestión de registro de usuarios (admin/recepcionista/mecanico)
+  showNewUserForm: boolean = false;
+  newUser: any = {
+    name: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    rol: 'mecanico'
   };
   
   constructor(
@@ -102,6 +114,7 @@ export class DashboardComponent implements OnInit {
         const rol = this.profile?.rol?.toLowerCase() || '';
         this.isAdmin = rol === 'administrador' || rol === 'admin';
         this.isReceptionist = rol === 'recepcionista' || rol === 'recepcion';
+        this.isMechanic = rol === 'mecanico' || rol === 'mecánico';
         this.isClient = rol === 'cliente' || rol === 'client';
         
         // Cargar reparaciones si es cliente
@@ -344,6 +357,74 @@ export class DashboardComponent implements OnInit {
       plate: ''
     };
     this.clientCars = [];
+  }
+  
+  // Gestión de registro de usuarios
+  showRegisterUserForm() {
+    this.showNewUserForm = true;
+    this.newUser = {
+      name: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      rol: 'mecanico'
+    };
+  }
+  
+  cancelNewUser() {
+    this.showNewUserForm = false;
+    this.newUser = {
+      name: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      rol: 'mecanico'
+    };
+  }
+  
+  createNewUser() {
+    // Validar campos
+    if (!this.newUser.name || !this.newUser.lastName || !this.newUser.email || 
+        !this.newUser.password || !this.newUser.confirmPassword || !this.newUser.rol) {
+      alert('Por favor, complete todos los campos');
+      return;
+    }
+    
+    if (this.newUser.password !== this.newUser.confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+    
+    if (this.newUser.password.length < 6) {
+      alert('La contraseña debe tener al menos 6 caracteres');
+      return;
+    }
+    
+    // Preparar datos para el registro
+    const userData = {
+      name: this.newUser.name.trim(),
+      lastName: this.newUser.lastName.trim(),
+      email: this.newUser.email.trim(),
+      password: this.newUser.password,
+      rol: this.newUser.rol
+    };
+    
+    this.apiService.registerUser(userData).subscribe({
+      next: (response) => {
+        if (response.success) {
+          alert('Usuario registrado exitosamente');
+          this.cancelNewUser();
+        } else {
+          alert(response.message || 'Error al registrar usuario');
+        }
+      },
+      error: (error) => {
+        console.error('Error al registrar usuario:', error);
+        alert(error.error?.message || 'Error al registrar usuario. Por favor, intente nuevamente.');
+      }
+    });
   }
 }
 

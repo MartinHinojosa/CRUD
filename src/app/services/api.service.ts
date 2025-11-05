@@ -31,9 +31,14 @@ export class ApiService {
     return this.http.get(`${API_URL}/health`);
   }
   
-  // Registro de nuevos usuarios (solo clientes)
+  // Registro de nuevos clientes (desde login)
   register(userData: any): Observable<any> {
-    return this.http.post(`${API_URL}/users/register`, userData);
+    return this.http.post(`${API_URL}/clients/register`, userData);
+  }
+  
+  // Registro de usuarios (mecánicos, administradores, recepcionistas)
+  registerUser(userData: any): Observable<any> {
+    return this.http.post(`${API_URL}/users/register-user`, userData);
   }
   
   // Obtener reparaciones de un cliente
