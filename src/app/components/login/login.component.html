@@ -1,0 +1,63 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="card-header">
+      <h2 class="title">Sistema de Gestión</h2>
+      <h3 class="subtitle">Iniciar Sesión</h3>
+    </div>
+    
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-group">
+        <label for="correo">
+          <span class="label-text">Correo Electrónico</span>
+        </label>
+        <input 
+          type="email" 
+          id="correo" 
+          formControlName="correo"
+          [class.invalid]="correo?.invalid && correo?.touched"
+          placeholder="correo@ejemplo.com"
+        />
+        <div class="error-message" *ngIf="correo?.invalid && correo?.touched">
+          <span *ngIf="correo?.errors?.['required']">El correo es requerido</span>
+          <span *ngIf="correo?.errors?.['email']">El correo no es válido</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">
+          <span class="label-text">Contraseña</span>
+        </label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password"
+          [class.invalid]="password?.invalid && password?.touched"
+          placeholder="Ingresa tu contraseña"
+        />
+        <div class="error-message" *ngIf="password?.invalid && password?.touched">
+          <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
+          <span *ngIf="password?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage" class="global-error">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid" class="submit-btn">
+        <span>Iniciar Sesión</span>
+        <span class="btn-glow"></span>
+      </button>
+
+      <div class="register-link">
+        <p>¿No tienes una cuenta? <a routerLink="/register">Regístrate aquí</a></p>
+      </div>
+    </form>
+  </div>
+  
+  <div class="background-effects">
+    <div class="glow-circle circle-1"></div>
+    <div class="glow-circle circle-2"></div>
+    <div class="glow-circle circle-3"></div>
+  </div>
+</div>

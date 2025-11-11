@@ -1,0 +1,108 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="card-header">
+      <h2 class="title">Sistema de Gestión</h2>
+      <h3 class="subtitle">Crear Nueva Cuenta - {{ roleName }}</h3>
+    </div>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form">
+      <div class="form-group">
+        <label for="nombre">
+          <span class="label-text">Nombre Completo</span>
+        </label>
+        <input 
+          type="text" 
+          id="nombre" 
+          formControlName="nombre"
+          [class.invalid]="nombre?.invalid && nombre?.touched"
+          placeholder="Ingresa tu nombre"
+        />
+        <div class="error-message" *ngIf="nombre?.invalid && nombre?.touched">
+          <span *ngIf="nombre?.errors?.['required']">El nombre es requerido</span>
+          <span *ngIf="nombre?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="correo">
+          <span class="label-text">Correo Electrónico</span>
+        </label>
+        <input 
+          type="email" 
+          id="correo" 
+          formControlName="correo"
+          [class.invalid]="correo?.invalid && correo?.touched"
+          placeholder="correo@ejemplo.com"
+        />
+        <div class="error-message" *ngIf="correo?.invalid && correo?.touched">
+          <span *ngIf="correo?.errors?.['required']">El correo es requerido</span>
+          <span *ngIf="correo?.errors?.['email']">El correo no es válido</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">
+          <span class="label-text">Contraseña</span>
+        </label>
+        <input 
+          type="password" 
+          id="password" 
+          formControlName="password"
+          [class.invalid]="password?.invalid && password?.touched"
+          placeholder="Mínimo 6 caracteres"
+        />
+        <div class="error-message" *ngIf="password?.invalid && password?.touched">
+          <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
+          <span *ngIf="password?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">
+          <span class="label-text">Confirmar Contraseña</span>
+        </label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          formControlName="confirmPassword"
+          [class.invalid]="confirmPassword?.invalid && confirmPassword?.touched"
+          placeholder="Repite tu contraseña"
+        />
+        <div class="error-message" *ngIf="confirmPassword?.invalid && confirmPassword?.touched">
+          <span *ngIf="confirmPassword?.errors?.['required']">Confirma tu contraseña</span>
+          <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">Las contraseñas no coinciden</span>
+        </div>
+      </div>
+
+      <div class="form-group role-display">
+        <label>
+          <span class="label-text">Tipo de Usuario</span>
+        </label>
+        <div class="role-badge">
+          <span class="role-icon">{{ selectedRole === 'admin' ? '👑' : '👤' }}</span>
+          <span>{{ roleName }}</span>
+        </div>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage" class="global-error">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" [disabled]="registerForm.invalid" class="submit-btn">
+        <span>Crear Cuenta</span>
+        <span class="btn-glow"></span>
+      </button>
+
+      <div class="login-link">
+        <p>¿Ya tienes una cuenta? <a routerLink="/login">Inicia Sesión</a></p>
+      </div>
+    </form>
+  </div>
+  
+  <div class="background-effects">
+    <div class="glow-circle circle-1"></div>
+    <div class="glow-circle circle-2"></div>
+    <div class="glow-circle circle-3"></div>
+  </div>
+</div>
+

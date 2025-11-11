@@ -1,0 +1,94 @@
+<div class="container">
+  <div class="background-gradient"></div>
+  
+  <header class="header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <span class="title-icon">🔧</span>
+        Gestión de Mantenimientos
+      </h1>
+      <div class="user-info">
+        <div class="user-badge">
+          <span class="user-icon">👤</span>
+          <span class="user-name">{{ getUserName() }}</span>
+        </div>
+        <button (click)="logout()" class="logout-btn">
+          <span>Cerrar Sesión</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="actions-bar" *ngIf="!isCliente()">
+    <button [routerLink]="getMantenimientosRoute() + '/nuevo'" class="btn-primary">
+      <span class="btn-icon">➕</span>
+      <span>Nuevo Mantenimiento</span>
+    </button>
+    <button [routerLink]="getVehiculosRoute()" class="btn-secondary">
+      <span class="btn-icon">🚗</span>
+      <span>Ver Vehículos</span>
+    </button>
+  </div>
+  
+  <div class="actions-bar" *ngIf="isCliente()">
+    <button [routerLink]="'/cliente/vehiculos'" class="btn-secondary">
+      <span class="btn-icon">🚗</span>
+      <span>Volver a Vehículos</span>
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <span class="error-icon">⚠️</span>
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando mantenimientos...</p>
+  </div>
+
+  <div *ngIf="!isLoading && hasMantenimientos" class="table-container">
+    <table class="mantenimientos-table">
+      <thead>
+        <tr>
+          <th>Vehículo</th>
+          <th>Tipo de Servicio</th>
+          <th>Fecha</th>
+          <th>Costo</th>
+          <th>Notas</th>
+          <th>Usuario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mantenimiento of mantenimientos" class="table-row">
+          <td class="placa-cell">{{ mantenimiento.placaVehiculo || 'N/A' }}</td>
+          <td>{{ mantenimiento.tipoServicio }}</td>
+          <td>{{ mantenimiento.fechaServicio | date:'dd/MM/yyyy' }}</td>
+          <td class="costo-cell">{{ mantenimiento.costo ? '$' + mantenimiento.costo : 'N/A' }}</td>
+          <td class="notas-cell">{{ mantenimiento.notas || 'N/A' }}</td>
+          <td>{{ mantenimiento.nombreUsuario || 'N/A' }}</td>
+          <td class="actions-cell">
+            <button *ngIf="!isCliente()" (click)="editMantenimiento(mantenimiento.idMantenimiento!)" class="btn-action btn-edit" title="Editar">
+              ✏️
+            </button>
+            <button *ngIf="!isCliente()" (click)="deleteMantenimiento(mantenimiento.idMantenimiento!)" class="btn-action btn-delete" title="Eliminar">
+              🗑️
+            </button>
+            <span *ngIf="isCliente()" class="read-only-badge">Solo lectura</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!isLoading && !hasMantenimientos" class="empty-state">
+    <div class="empty-icon">🔧</div>
+    <h3>No hay mantenimientos registrados</h3>
+    <p>Comienza agregando tu primer mantenimiento</p>
+    <button [routerLink]="getMantenimientosRoute() + '/nuevo'" class="btn-primary">
+      <span class="btn-icon">➕</span>
+      <span>Agregar Mantenimiento</span>
+    </button>
+  </div>
+</div>

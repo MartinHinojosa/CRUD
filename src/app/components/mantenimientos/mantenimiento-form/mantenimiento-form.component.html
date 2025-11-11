@@ -1,0 +1,96 @@
+<div class="container">
+  <h2>{{ isEdit ? 'Editar Mantenimiento' : 'Nuevo Mantenimiento' }}</h2>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="mantenimientoForm" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-group">
+      <label for="idVehiculo">Vehículo *</label>
+      <select 
+        id="idVehiculo" 
+        formControlName="idVehiculo"
+        [class.invalid]="idVehiculo?.invalid && idVehiculo?.touched"
+      >
+        <option value="">Seleccione un vehículo</option>
+        <option *ngFor="let vehiculo of vehiculos" [value]="vehiculo.idVehiculo">
+          {{ vehiculo.placa }} - {{ vehiculo.marca }} {{ vehiculo.modelo }}
+        </option>
+      </select>
+      <div class="error-message" *ngIf="idVehiculo?.invalid && idVehiculo?.touched">
+        <span *ngIf="idVehiculo?.errors?.['required']">El vehículo es requerido</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="tipoServicio">Tipo de Servicio *</label>
+      <input 
+        type="text" 
+        id="tipoServicio" 
+        formControlName="tipoServicio"
+        [class.invalid]="tipoServicio?.invalid && tipoServicio?.touched"
+        maxlength="100"
+      />
+      <div class="error-message" *ngIf="tipoServicio?.invalid && tipoServicio?.touched">
+        <span *ngIf="tipoServicio?.errors?.['required']">El tipo de servicio es requerido</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="fechaServicio">Fecha de Servicio *</label>
+      <input 
+        type="date" 
+        id="fechaServicio" 
+        formControlName="fechaServicio"
+        [class.invalid]="fechaServicio?.invalid && fechaServicio?.touched"
+      />
+      <div class="error-message" *ngIf="fechaServicio?.invalid && fechaServicio?.touched">
+        <span *ngIf="fechaServicio?.errors?.['required']">La fecha es requerida</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="costo">Costo</label>
+      <input 
+        type="number" 
+        id="costo" 
+        formControlName="costo"
+        step="0.01"
+        min="0"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="notas">Notas</label>
+      <textarea 
+        id="notas" 
+        formControlName="notas"
+        rows="4"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="idUsuario">Usuario Responsable (Opcional)</label>
+      <select 
+        id="idUsuario" 
+        formControlName="idUsuario"
+        class="select-input"
+      >
+        <option [value]="null">Seleccione un usuario</option>
+        <option *ngFor="let usuario of usuarios" [value]="usuario.idUsuario">
+          {{ usuario.nombre }} ({{ usuario.correo }}) - {{ usuario.rol }}
+        </option>
+      </select>
+      <div *ngIf="loadingUsuarios" class="loading-text">Cargando usuarios...</div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="mantenimientoForm.invalid" class="btn-primary">
+        {{ isEdit ? 'Actualizar' : 'Crear' }}
+      </button>
+      <button type="button" (click)="cancel()" class="btn-secondary">Cancelar</button>
+    </div>
+  </form>
+</div>
+

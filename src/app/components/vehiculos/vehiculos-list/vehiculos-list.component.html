@@ -1,0 +1,91 @@
+<div class="container">
+  <div class="background-gradient"></div>
+  
+  <header class="header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <span class="title-icon">🚗</span>
+        Gestión de Vehículos
+      </h1>
+      <div class="user-info">
+        <div class="user-badge">
+          <span class="user-icon">👤</span>
+          <span class="user-name">{{ getUserName() }}</span>
+        </div>
+        <button (click)="logout()" class="logout-btn">
+          <span>Cerrar Sesión</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="actions-bar">
+    <button [routerLink]="getVehiculosRoute() + '/nuevo'" class="btn-primary">
+      <span class="btn-icon">➕</span>
+      <span>Nuevo Vehículo</span>
+    </button>
+    <button [routerLink]="getMantenimientosRoute()" class="btn-secondary">
+      <span class="btn-icon">🔧</span>
+      <span>Ver Mantenimientos</span>
+    </button>
+    <button *ngIf="getUserRole() === 'admin'" [routerLink]="'/admin/register-cliente'" class="btn-secondary">
+      <span class="btn-icon">👤</span>
+      <span>Registrar Cliente</span>
+    </button>
+  </div>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <span class="error-icon">⚠️</span>
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando vehículos...</p>
+  </div>
+
+  <div *ngIf="!isLoading && hasVehiculos" class="table-container">
+    <table class="vehiculos-table">
+      <thead>
+        <tr>
+          <th>Placa</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Año</th>
+          <th>Propietario</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vehiculo of vehiculos" class="table-row">
+          <td class="placa-cell">{{ vehiculo.placa }}</td>
+          <td>{{ vehiculo.marca }}</td>
+          <td>{{ vehiculo.modelo }}</td>
+          <td>{{ vehiculo.anio || 'N/A' }}</td>
+          <td>{{ vehiculo.nombrePropietario || 'N/A' }}</td>
+          <td class="actions-cell">
+            <button (click)="editVehiculo(vehiculo.idVehiculo!)" class="btn-action btn-edit" title="Editar">
+              ✏️
+            </button>
+            <button (click)="viewMantenimientos(vehiculo.idVehiculo!)" class="btn-action btn-view" title="Historial">
+              📋
+            </button>
+            <button (click)="deleteVehiculo(vehiculo.idVehiculo!)" class="btn-action btn-delete" title="Eliminar">
+              🗑️
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!isLoading && !hasVehiculos" class="empty-state">
+    <div class="empty-icon">🚗</div>
+    <h3>No hay vehículos registrados</h3>
+    <p>Comienza agregando tu primer vehículo</p>
+    <button [routerLink]="getVehiculosRoute() + '/nuevo'" class="btn-primary">
+      <span class="btn-icon">➕</span>
+      <span>Agregar Vehículo</span>
+    </button>
+  </div>
+</div>

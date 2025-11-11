@@ -1,0 +1,55 @@
+<div class="welcome-container">
+  <div class="background-effects">
+    <div class="glow-circle circle-1"></div>
+    <div class="glow-circle circle-2"></div>
+    <div class="glow-circle circle-3"></div>
+  </div>
+
+  <div class="welcome-content">
+    <div class="welcome-header">
+      <h1 class="main-title">
+        <span class="title-icon">🚗</span>
+        Sistema de Gestión de Taller
+      </h1>
+      <p class="subtitle">Bienvenido al sistema de gestión de vehículos y mantenimientos</p>
+    </div>
+
+    <div class="role-selection">
+      <h2 class="selection-title">Selecciona tu tipo de usuario</h2>
+      
+      <div class="role-cards">
+        <div class="role-card admin-card" (click)="selectRole('admin')">
+          <div class="card-icon">👑</div>
+          <h3>Administrador</h3>
+          <p>Acceso completo al sistema</p>
+          <div class="card-features">
+            <span>✓ Gestión de vehículos</span>
+            <span>✓ Gestión de mantenimientos</span>
+            <span>✓ Control total</span>
+          </div>
+          <button class="role-btn">Acceder como Admin</button>
+        </div>
+
+        <div class="role-card empleado-card" (click)="selectRole('empleado')">
+          <div class="card-icon">👤</div>
+          <h3>Empleado</h3>
+          <p>Gestión de operaciones</p>
+          <div class="card-features">
+            <span>✓ Registrar vehículos</span>
+            <span>✓ Registrar mantenimientos</span>
+            <span>✓ Consultar información</span>
+          </div>
+          <button class="role-btn">Acceder como Empleado</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="login-section">
+      <p class="login-text">¿Ya tienes una cuenta?</p>
+      <button (click)="goToLogin()" class="login-btn">
+        Iniciar Sesión
+      </button>
+    </div>
+  </div>
+</div>
+

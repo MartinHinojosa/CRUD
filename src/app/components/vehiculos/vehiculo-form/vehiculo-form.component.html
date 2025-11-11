@@ -1,0 +1,85 @@
+<div class="container">
+  <h2>{{ isEdit ? 'Editar Vehículo' : 'Nuevo Vehículo' }}</h2>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="vehiculoForm" (ngSubmit)="onSubmit()" class="form">
+    <div class="form-group">
+      <label for="placa">Placa *</label>
+      <input 
+        type="text" 
+        id="placa" 
+        formControlName="placa"
+        [class.invalid]="placa?.invalid && placa?.touched"
+        maxlength="20"
+      />
+      <div class="error-message" *ngIf="placa?.invalid && placa?.touched">
+        <span *ngIf="placa?.errors?.['required']">La placa es requerida</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="marca">Marca *</label>
+      <input 
+        type="text" 
+        id="marca" 
+        formControlName="marca"
+        [class.invalid]="marca?.invalid && marca?.touched"
+        maxlength="50"
+      />
+      <div class="error-message" *ngIf="marca?.invalid && marca?.touched">
+        <span *ngIf="marca?.errors?.['required']">La marca es requerida</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="modelo">Modelo *</label>
+      <input 
+        type="text" 
+        id="modelo" 
+        formControlName="modelo"
+        [class.invalid]="modelo?.invalid && modelo?.touched"
+        maxlength="50"
+      />
+      <div class="error-message" *ngIf="modelo?.invalid && modelo?.touched">
+        <span *ngIf="modelo?.errors?.['required']">El modelo es requerido</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="anio">Año</label>
+      <input 
+        type="number" 
+        id="anio" 
+        formControlName="anio"
+        min="1900"
+        max="2100"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="idUsuario">Propietario (Opcional)</label>
+      <select 
+        id="idUsuario" 
+        formControlName="idUsuario"
+        class="select-input"
+      >
+        <option [value]="null">Seleccione un propietario</option>
+        <option *ngFor="let usuario of usuarios" [value]="usuario.idUsuario">
+          {{ usuario.nombre }} ({{ usuario.correo }}) - {{ usuario.rol }}
+        </option>
+      </select>
+      <div *ngIf="loadingUsuarios" class="loading-text">Cargando usuarios...</div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="vehiculoForm.invalid" class="btn-primary">
+        {{ isEdit ? 'Actualizar' : 'Crear' }}
+      </button>
+      <button type="button" (click)="cancel()" class="btn-secondary">Cancelar</button>
+    </div>
+  </form>
+</div>
+

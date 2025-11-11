@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="background-gradient"></div>
+  
+  <header class="header">
+    <div class="header-content">
+      <h1 class="page-title">
+        <span class="title-icon">🚗</span>
+        Mis Vehículos
+      </h1>
+      <div class="user-info">
+        <div class="user-badge">
+          <span class="user-icon">👤</span>
+          <span class="user-name">{{ getUserName() }}</span>
+        </div>
+        <button (click)="logout()" class="logout-btn">
+          <span>Cerrar Sesión</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div *ngIf="errorMessage" class="error-message">
+    <span class="error-icon">⚠️</span>
+    {{ errorMessage }}
+  </div>
+
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando vehículos...</p>
+  </div>
+
+  <div *ngIf="!isLoading && hasVehiculos" class="table-container">
+    <table class="vehiculos-table">
+      <thead>
+        <tr>
+          <th>Placa</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Año</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let vehiculo of vehiculos" class="table-row">
+          <td class="placa-cell">{{ vehiculo.placa }}</td>
+          <td>{{ vehiculo.marca }}</td>
+          <td>{{ vehiculo.modelo }}</td>
+          <td>{{ vehiculo.anio || 'N/A' }}</td>
+          <td class="actions-cell">
+            <button (click)="viewMantenimientos(vehiculo.idVehiculo!)" class="btn-action btn-view" title="Ver Mantenimientos">
+              📋 Ver Mantenimientos
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="!isLoading && !hasVehiculos" class="empty-state">
+    <div class="empty-icon">🚗</div>
+    <h3>No tienes vehículos registrados</h3>
+    <p>Contacta al administrador para registrar tus vehículos</p>
+  </div>
+</div>
+
